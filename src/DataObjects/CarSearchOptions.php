@@ -7,6 +7,7 @@
 
 namespace App\DataObjects;
 
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class CarSearchOptions
@@ -68,6 +69,39 @@ class CarSearchOptions
         }
 
         return $this;
+    }
+
+    public function defineCriteria(Criteria $criteria): Criteria
+    {
+        foreach([
+            self::IS_NEW => function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->eq(self::IS_NEW, $value));
+            },
+            self::MANUFACTURED_ID => function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->eq(self::MANUFACTURED_ID, $value));
+            },
+            self::BUILD_YEAR_FROM => function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->gte(self::BUILD_YEAR_FROM, $value));
+            },
+            self::BUILD_YEAR_TO => function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->lte(self::BUILD_YEAR_TO, $value));
+            },
+            self::PRICE_FROM=> function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->gte(self::PRICE_FROM, $value));
+            },
+            self::PRICE_TO => function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->lte(self::PRICE_TO, $value));
+            },
+            self::IS_RAIN_SENSOR => function (Criteria $criteria, $value) {
+                return $criteria->andWhere(Criteria::expr()->eq(self::IS_RAIN_SENSOR, $value));
+            },
+        ] as $key => $fu){
+            if(isset($this->attributes[$key])){
+                $fu($criteria, $this->attributes[$key]);
+            }
+        }
+
+        return $criteria;
     }
 
     private function castTinyInt($value): int

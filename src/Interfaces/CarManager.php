@@ -5,7 +5,7 @@
  * Date: 11.06.2020
  */
 
-namespace App\Services\Interfaces;
+namespace App\Interfaces;
 
 
 use App\DataObjects\CarSearchOptions;

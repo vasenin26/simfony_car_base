@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\DataObjects\CarSearchOptions;
 use App\Entity\Cars;
-use App\Services\Interfaces\CarManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
+use App\Interfaces\CarManager;
 
 class CarsCatalogController extends AbstractController
 {
