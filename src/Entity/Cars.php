@@ -52,6 +52,12 @@ class Cars
      */
     private $mileage;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Vendors::class)
+     * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+     */
+    private $vendors;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,19 +135,25 @@ class Cars
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getMileage()
     {
         return $this->mileage;
     }
 
-    /**
-     * @param mixed $mileage
-     */
     public function setMileage($mileage): void
     {
         $this->mileage = $mileage;
+    }
+
+    public function getVendors(): ?Vendors
+    {
+        return $this->vendors;
+    }
+
+    public function setVendors(Vendors $vendors): self
+    {
+        $this->vendors = $vendors;
+
+        return $this;
     }
 }
