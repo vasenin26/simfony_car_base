@@ -12,8 +12,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class CarSearchOptions
 {
+    /**
+     * Available request filtration keys
+     */
     const IS_NEW = 'is_new';
-    const MANUFACTURED_ID = 'manufactured_id';
+    const MANUFACTURED_ID = 'vendor_id';
     const BUILD_YEAR_FROM = 'build_year_from';
     const BUILD_YEAR_TO = 'build_year_to';
     const PRICE_FROM = 'price_from';
@@ -21,13 +24,13 @@ class CarSearchOptions
     const IS_RAIN_SENSOR = 'is_rain_sensor';
 
     const OPTION_CASTS = [
-        self::IS_NEW => 'TinyInt',
+        self::IS_NEW => 'Boolean',
         self::MANUFACTURED_ID => 'Int',
         self::BUILD_YEAR_FROM => 'Year',
         self::BUILD_YEAR_TO => 'Year',
         self::PRICE_FROM => 'Int',
         self::PRICE_TO => 'Int',
-        self::IS_RAIN_SENSOR => 'TinyInt',
+        self::IS_RAIN_SENSOR => 'Boolean',
     ];
 
     /**
@@ -75,25 +78,25 @@ class CarSearchOptions
     {
         foreach([
             self::IS_NEW => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->eq(self::IS_NEW, $value));
+                return $criteria->andWhere(Criteria::expr()->eq('is_new', $value));
             },
             self::MANUFACTURED_ID => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->eq(self::MANUFACTURED_ID, $value));
+                return $criteria->andWhere(Criteria::expr()->eq('vendor_id', $value));
             },
             self::BUILD_YEAR_FROM => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->gte(self::BUILD_YEAR_FROM, $value));
+                return $criteria->andWhere(Criteria::expr()->gte('production_data', $value));
             },
             self::BUILD_YEAR_TO => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->lte(self::BUILD_YEAR_TO, $value));
+                return $criteria->andWhere(Criteria::expr()->lte('production_data', $value));
             },
             self::PRICE_FROM=> function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->gte(self::PRICE_FROM, $value));
+                return $criteria->andWhere(Criteria::expr()->gte('price', $value));
             },
             self::PRICE_TO => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->lte(self::PRICE_TO, $value));
+                return $criteria->andWhere(Criteria::expr()->lte('price', $value));
             },
             self::IS_RAIN_SENSOR => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->eq(self::IS_RAIN_SENSOR, $value));
+                return $criteria->andWhere(Criteria::expr()->eq('is_rain_sensor', $value));
             },
         ] as $key => $fu){
             if(isset($this->attributes[$key])){
@@ -104,7 +107,7 @@ class CarSearchOptions
         return $criteria;
     }
 
-    private function castTinyInt($value): int
+    private function castBoolean($value): int
     {
         return (int)($value > 0);
     }
@@ -117,6 +120,8 @@ class CarSearchOptions
     private function castYear($value): int
     {
         //we can check that year less current year
+        //also we can prepare data object to integer value
+        //and more other needed preparation if we want
         return (int)($value);
     }
 }
