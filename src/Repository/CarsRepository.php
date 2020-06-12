@@ -19,6 +19,8 @@ class CarsRepository extends ServiceEntityRepository implements CarManager
 {
     const DEFAULT_MAX_RESULT = 20;
 
+    const DEFAULT_REDUCE_PERCENTAGE = 30;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cars::class);
@@ -50,6 +52,23 @@ class CarsRepository extends ServiceEntityRepository implements CarManager
             ->getQuery()->execute();
 
         return $result ?? [];
+    }
+
+    public function loseCarsMileage(?carSearchOptions $options, int $percentage = self::DEFAULT_REDUCE_PERCENTAGE)
+    {
+        $criteria = Criteria::create();
+        $options->defineCriteria($criteria);
+
+        if($percentage > 100) $percentage = 100;
+
+        $percentage = (100 - $percentage) / 100;
+
+        return $this->createQueryBuilder('c')
+            ->update('App\Entity\Cars', 'cars')
+            ->set('cars.mileage', "cars.mileage * $percentage")
+            ->addCriteria($criteria)
+            ->getQuery()
+            ->execute();
     }
 
 }

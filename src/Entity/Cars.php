@@ -47,6 +47,11 @@ class Cars
      */
     private $vendor_id;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $mileage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,5 +127,21 @@ class Cars
         $this->vendor_id = $vendor_id;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMileage()
+    {
+        return $this->mileage;
+    }
+
+    /**
+     * @param mixed $mileage
+     */
+    public function setMileage($mileage): void
+    {
+        $this->mileage = $mileage;
     }
 }

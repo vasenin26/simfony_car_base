@@ -22,6 +22,8 @@ class CarSearchOptions
     const PRICE_FROM = 'price_from';
     const PRICE_TO = 'price_to';
     const IS_RAIN_SENSOR = 'is_rain_sensor';
+    const MILEAGE_FROM = 'millage_from';
+    const MILEAGE_TO = 'millage_to';
 
     const OPTION_CASTS = [
         self::IS_NEW => 'Boolean',
@@ -30,6 +32,8 @@ class CarSearchOptions
         self::BUILD_YEAR_TO => 'Year',
         self::PRICE_FROM => 'Int',
         self::PRICE_TO => 'Int',
+        self::MILEAGE_FROM => 'Int',
+        self::MILEAGE_TO => 'Int',
         self::IS_RAIN_SENSOR => 'Boolean',
     ];
 
@@ -38,9 +42,11 @@ class CarSearchOptions
      */
     private $attributes = [];
 
-    public function __construct(RequestStack $request)
+    public function __construct(?RequestStack $request = null)
     {
-        $this->fill($request->getCurrentRequest()->query->all());
+        if ($request) {
+            $this->fill($request->getCurrentRequest()->query->all());
+        }
     }
 
     public function __get(string $key)
@@ -76,30 +82,33 @@ class CarSearchOptions
 
     public function defineCriteria(Criteria $criteria): Criteria
     {
-        foreach([
-            self::IS_NEW => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->eq('is_new', $value));
-            },
-            self::MANUFACTURED_ID => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->eq('vendor_id', $value));
-            },
-            self::BUILD_YEAR_FROM => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->gte('production_data', $value));
-            },
-            self::BUILD_YEAR_TO => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->lte('production_data', $value));
-            },
-            self::PRICE_FROM=> function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->gte('price', $value));
-            },
-            self::PRICE_TO => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->lte('price', $value));
-            },
-            self::IS_RAIN_SENSOR => function (Criteria $criteria, $value) {
-                return $criteria->andWhere(Criteria::expr()->eq('is_rain_sensor', $value));
-            },
-        ] as $key => $fu){
-            if(isset($this->attributes[$key])){
+        foreach ([
+                     self::IS_NEW => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->eq('is_new', $value));
+                     },
+                     self::MANUFACTURED_ID => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->eq('vendor_id', $value));
+                     },
+                     self::BUILD_YEAR_FROM => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->gte('production_data', $value));
+                     },
+                     self::BUILD_YEAR_TO => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->lte('production_data', $value));
+                     },
+                     self::PRICE_FROM => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->gte('price', $value));
+                     },
+                     self::PRICE_TO => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->lte('price', $value));
+                     },
+                     self::MILEAGE_FROM => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->gte('mileage', $value));
+                     },
+                     self::MILEAGE_TO => function (Criteria $criteria, $value) {
+                         return $criteria->andWhere(Criteria::expr()->lte('mileage', $value));
+                     },
+                 ] as $key => $fu) {
+            if (isset($this->attributes[$key])) {
                 $fu($criteria, $this->attributes[$key]);
             }
         }
