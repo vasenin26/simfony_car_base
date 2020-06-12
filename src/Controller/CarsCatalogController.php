@@ -50,11 +50,13 @@ class CarsCatalogController extends AbstractController
 
     /**
      * @Route("/cars/latest", name="cars_latest")
+     * @param CarManager $carManager
+     * @return JsonResponse
      */
-    public function latest(): JsonResponse
+    public function latest(CarManager $carManager): JsonResponse
     {
         return $this->json([
-            'items' => []
+            'items' => $carManager->getLatestCars()
         ]);
     }
 }

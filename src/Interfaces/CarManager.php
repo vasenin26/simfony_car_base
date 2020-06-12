@@ -13,5 +13,5 @@ use App\DataObjects\CarSearchOptions;
 interface CarManager
 {
     public function searchCars(?CarSearchOptions $options = null): array;
-    public function getLatestCars(int $limit): array;
+    public function getLatestCars(?int $limit = null): array;
 }

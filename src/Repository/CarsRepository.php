@@ -17,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CarsRepository extends ServiceEntityRepository implements CarManager
 {
+    const DEFAULT_MAX_RESULT = 20;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cars::class);
@@ -40,10 +42,14 @@ class CarsRepository extends ServiceEntityRepository implements CarManager
         return $result;
     }
 
-    public function getLatestCars(int $limit): array
+    public function getLatestCars(?int $limit = null): array
     {
-        // TODO: Implement getLatestCars() method.
-        return [];
+        $result = $this->createQueryBuilder('cars')
+            ->orderBy('created_at', 'desc')
+            ->setMaxResults($limit ?? self::DEFAULT_MAX_RESULT)
+            ->getQuery()->execute();
+
+        return $result ?? [];
     }
 
 }
