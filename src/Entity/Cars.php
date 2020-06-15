@@ -30,7 +30,7 @@ class Cars
     /**
      * @ORM\Column(type="date")
      */
-    private $production_data;
+    private $production_date;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -87,14 +87,14 @@ class Cars
         return $this;
     }
 
-    public function getProductionData(): ?\DateTimeInterface
+    public function getProductionDate(): ?\DateTimeInterface
     {
-        return $this->production_data;
+        return $this->production_date;
     }
 
-    public function setProductionData(\DateTimeInterface $production_data): self
+    public function setProductionDate(\DateTimeInterface $production_data): self
     {
-        $this->production_data = $production_data;
+        $this->production_date = $production_data;
 
         return $this;
     }
