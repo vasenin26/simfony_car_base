@@ -7,6 +7,7 @@ use App\Entity\Cars;
 use App\Interfaces\CarManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,7 +48,7 @@ class CarsRepository extends ServiceEntityRepository implements CarManager
     public function getLatestCars(?int $limit = null): array
     {
         $result = $this->createQueryBuilder('cars')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('cars.production_data', 'desc')
             ->setMaxResults($limit ?? self::DEFAULT_MAX_RESULT)
             ->getQuery()->execute();
 

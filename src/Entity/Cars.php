@@ -53,7 +53,7 @@ class Cars
     private $mileage;
 
     /**
-     * @ORM\OneToOne(targetEntity=Vendors::class)
+     * @ORM\ManyToOne(targetEntity=Vendors::class)
      * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
      */
     private $vendors;

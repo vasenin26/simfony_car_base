@@ -17,25 +17,6 @@ class CarsCatalogController extends AbstractController
 {
 
     /**
-     * @Route("/cars/create", name="cars_create")
-     * @param EntityManager $manager
-     * @return JsonResponse
-     * @throws ORMException
-     */
-    public function create(EntityManager $manager): JsonResponse
-    {
-        $car = new Cars();
-
-        $car->setTitle('Test');
-
-        $manager->persist($car);
-
-        return $this->json([
-            'ok' => []
-        ]);
-    }
-
-    /**
      * @Route("/cars/search", name="cars_search")
      * @param CarManager $carManager
      * @param CarSearchOptions $carSearchOptions
